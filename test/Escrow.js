@@ -18,14 +18,16 @@ describe('Escrow', () => {
             let transaction = await realEstate.connect(owner).mint("https://ipfs.io/ipfs/QmTudSYeM7mz3PkYEWXWqPjomRPHogcMFSq7XAvsvsgAPS")
             await transaction.wait()
     
+    
             const Investment = await ethers.getContractFactory('Investment')
             investment = await Investment.deploy(realEstate.address, owner.address, inspector.address)
 
             transaction = await realEstate.connect(owner).approve(investment.address, 1)
             await transaction.wait()
 
-            transaction = await investment.connect(owner).list(1, tokens(10), 70)
+            transaction = await investment.connect(owner).list(1, tokens(10), 70, "TEMP", "Property 1")
             await transaction.wait()
+
 
 
     })
@@ -99,6 +101,13 @@ describe('Escrow', () => {
         it('Updates contract balance', async () => {
             const result = await investment.getBalance()
             expect(result).to.be.equal(tokens(3))
+        })
+
+        it('Token Transfered', async () => {
+            const tokenAddress = await investment.tokenCollections(1)
+            // const result = await tokenCollection.balanceOf(investors[0].address)
+            const erc20Contract = await ethers.getContractAt("Token", tokenAddress);
+            console.log(await erc20Contract.balanceOf(investors[2].address))
         })
     })
     

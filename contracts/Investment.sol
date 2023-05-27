@@ -1,5 +1,6 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
+import "./Tokens.sol";
 
 interface IERC721 {
     function transferFrom(address _from, address _to, uint256 _id) external;
@@ -27,6 +28,7 @@ contract Investment {
     mapping(uint256 => mapping(address => uint256)) public investors;
     mapping(uint256 => uint256) public tokenPrice;
     mapping(uint256 => uint256) numberOfAvailableTokens;
+    mapping(uint256 => Token) public tokenCollections;
 
     constructor(
         address _nftAddress,
@@ -41,7 +43,9 @@ contract Investment {
     function list(
         uint256 _nftID,
         uint256 _totalPrice,
-        uint256 _sharedPersentage
+        uint256 _sharedPersentage,
+        string memory _name,
+        string memory _symbol
     ) public payable onlyOwner {
         require(
             _sharedPersentage <= 75 && _sharedPersentage >= 20,
@@ -60,6 +64,9 @@ contract Investment {
         numberOfTotalTokens[_nftID] = _sharedPersentage * 100; //hardcoded number of tokens (have to make it either input or global variable)
         numberOfAvailableTokens[_nftID] = numberOfTotalTokens[_nftID];
         tokenPrice[_nftID] = _totalPrice / 10000; // hardcoded (each token is 0.01% of the property value)
+
+        Token newTokenCollection = new Token(_symbol, _name);
+        tokenCollections[_nftID] = newTokenCollection;
     }
 
     function invest(
@@ -81,8 +88,8 @@ contract Investment {
         );
         investors[_nftID][msg.sender] = _numberOfTokensInvested;
         numberOfAvailableTokens[_nftID] -= _numberOfTokensInvested;
-
         // To-do: Get the ERC20 tokens from Tokens.sol contract and send it to investors wallet
+        tokenCollections[_nftID].mint(msg.sender, _numberOfTokensInvested);
     }
 
     function updateInspectionStatus(
