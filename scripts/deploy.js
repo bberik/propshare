@@ -12,7 +12,11 @@ const tokens = (n) => {
 
 async function main() {
   // Setup accounts
-  const [owner, inspector, ...investors] = await ethers.getSigners()
+  const accounts = await ethers.getSigners()
+
+  const owners = accounts.slice(0, 3);
+  const inspectors = accounts.slice(3, 6);
+  const investors = accounts.slice(6);
 
   // Deploy Real Estate
   const RealEstate = await ethers.getContractFactory('RealEstate')
@@ -23,7 +27,7 @@ async function main() {
   console.log(`Minting 3 properties...\n`)
 
   for (let i = 0; i < 3; i++) {
-    const transaction = await realEstate.connect(owner).mint(`https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json`)
+    const transaction = await realEstate.connect(owners[i]).mint(`https://ipfs.io/ipfs/QmQVcpsjrA6cr1iJjZAodYwmPekYgbnXGo4DFubJiLc2EB/${i + 1}.json`)
     await transaction.wait()
   }
 
@@ -31,30 +35,30 @@ async function main() {
 
 
   const Investment = await ethers.getContractFactory('Investment')
-  const investment = await Investment.deploy(realEstate.address, owner.address, inspector.address)
+  const investment = await Investment.deploy(realEstate.address)
   await investment.deployed()
 
   console.log(`Deployed Escrow Contract at: ${investment.address}`)
   console.log(`Listing 3 properties...\n`)
 
-  transaction = await realEstate.connect(owner).approve(investment.address, 1)
-  await transaction.wait()
+  // transaction = await realEstate.connect(owners[0]).approve(investment.address, 1)
+  // await transaction.wait()
 
-  transaction = await investment.connect(owner).list(1, tokens(10), 70, "Property 1", "FRST")
-  await transaction.wait()
+  // transaction = await investment.connect(owners[0]).list(1, tokens(10), 70, "Property 1", "FRST", inspectors[0].address)
+  // await transaction.wait()
 
-  transaction = await realEstate.connect(owner).approve(investment.address, 2)
-  await transaction.wait()
+  // transaction = await realEstate.connect(owners[1]).approve(investment.address, 2)
+  // await transaction.wait()
 
-  transaction = await investment.connect(owner).list(2, tokens(5), 50, "Property 2", "SCND")
-  await transaction.wait()
+  // transaction = await investment.connect(owners[1]).list(2, tokens(5), 50, "Property 2", "SCND", inspectors[1].address)
+  // await transaction.wait()
 
 
-  transaction = await realEstate.connect(owner).approve(investment.address, 3)
-  await transaction.wait()
+  // transaction = await realEstate.connect(owners[2]).approve(investment.address, 3)
+  // await transaction.wait()
 
-  transaction = await investment.connect(owner).list(3, tokens(7), 40, "Property 3", "THRD")
-  await transaction.wait()
+  // transaction = await investment.connect(owners[2]).list(3, tokens(7), 40, "Property 3", "THRD", inspectors[2].address)
+  // await transaction.wait()
 
   console.log(`Finished.`)
 }

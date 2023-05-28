@@ -88,8 +88,13 @@ describe('Escrow', () => {
 
         it('Updates contract balance', async () => {
             const result = await investment.getBalance()
-            expect(result).to.be.equal(tokens(3))
+            expect(result).to.be.equal(tokens(0))
         })
+        
+        // it('Updates owner balance', async () => {
+        //     const result = await owners[0].getBalance()
+        //     expect(result).to.be.equal(tokens(13))
+        // })
 
         it('Token Transfered', async () => {
             const result = await investment.nftData(1)

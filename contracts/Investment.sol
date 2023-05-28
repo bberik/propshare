@@ -85,6 +85,11 @@ contract Investment {
             msg.sender,
             _numberOfTokensInvested
         );
+
+        (bool success, ) = payable(nftData[_nftID].owner).call{
+            value: msg.value
+        }("");
+        require(success);
     }
 
     function updateInspectionStatus(uint256 _nftID, bool _passed) public {

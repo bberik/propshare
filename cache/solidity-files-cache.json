@@ -41,8 +41,8 @@
       ]
     },
     "/Users/berik/Desktop/propshare/contracts/Investment.sol": {
-      "lastModificationDate": 1685269823161,
-      "contentHash": "9c08e19e91c2b063998c92df8f1f8109",
+      "lastModificationDate": 1685271501447,
+      "contentHash": "8ff17be8c3dfd43c87aa755d27e97898",
       "sourceName": "contracts/Investment.sol",
       "solcConfig": {
         "version": "0.8.17",
