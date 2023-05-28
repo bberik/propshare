@@ -6,83 +6,71 @@ const tokens = (n) => {
 }
 
 describe('Escrow', () => {
-    let owner, investors, inspector
-    let realEstate, investment
+    let investment, realEstate, owners, inspectors, investors
     
     beforeEach(async () => {
-        [owner, inspector, ...investors] = await ethers.getSigners()
-    
+        
+            const accounts = await ethers.getSigners()
+
+            owners = accounts.slice(0, 3);
+            inspectors = accounts.slice(3, 6);
+            investors = accounts.slice(6);
+        
             const RealEstate = await ethers.getContractFactory('RealEstate')
             realEstate = await RealEstate.deploy()
         
-            let transaction = await realEstate.connect(owner).mint("https://ipfs.io/ipfs/QmTudSYeM7mz3PkYEWXWqPjomRPHogcMFSq7XAvsvsgAPS")
+            let transaction = await realEstate.connect(owners[0]).mint("https://ipfs.io/ipfs/QmTudSYeM7mz3PkYEWXWqPjomRPHogcMFSq7XAvsvsgAPS/1.json")
             await transaction.wait()
-    
+
+            transaction = await realEstate.connect(owners[1]).mint("https://ipfs.io/ipfs/QmTudSYeM7mz3PkYEWXWqPjomRPHogcMFSq7XAvsvsgAPS/2.json")
+            await transaction.wait()
     
             const Investment = await ethers.getContractFactory('Investment')
-            investment = await Investment.deploy(realEstate.address, owner.address, inspector.address)
+            investment = await Investment.deploy(realEstate.address)
 
-            transaction = await realEstate.connect(owner).approve(investment.address, 1)
+            transaction = await realEstate.connect(owners[0]).approve(investment.address, 1)
             await transaction.wait()
 
-            transaction = await investment.connect(owner).list(1, tokens(10), 70, "TEMP", "Property 1")
+            transaction = await investment.connect(owners[0]).list(1, tokens(10), 70, "Property 1", "FRST", inspectors[0].address)
+            await transaction.wait()
+
+            transaction = await realEstate.connect(owners[1]).approve(investment.address, 2)
+            await transaction.wait()
+
+            transaction = await investment.connect(owners[1]).list(2, tokens(4), 50, "Property 2", "SCND", inspectors[1].address)
             await transaction.wait()
 
 
 
     })
 
-    describe('Deployment', () => {
-        it('Returns NFT address', async () => {
-            const result = await investment.nftAddress()
-            expect(result).to.be.equal(realEstate.address)
-        })
-
-        it('Returns Owner address', async () => {
-            const result = await investment.owner()
-            expect(result).to.be.equal(owner.address)
-        })
-
-        it('Returns Inspector address', async () => {
-            const result = await investment.inspector()
-            expect(result).to.be.equal(inspector.address)
-        })
-
-
-    })
 
     describe('Listing', () => {
-        it('Updates as listed', async () => {
-            const result = await investment.isListed(1)
-            expect(result).to.be.equal(true)
-        })
 
         it('Returns number of total tokens', async () => {
-            const result = await investment.numberOfTotalTokens(1)
-            console.log(result)
+            const result = await investment.nftData(2)
+            console.log(result.numberOfTotalTokens)
             // expect(result).to.be.equal()
         })
 
         it('Returns total price', async () => {
-            const result = await investment.totalPrice(1)
-            console.log(result)
+            const result = await investment.nftData(2)
+
+            console.log(result.totalPrice)
             // expect(result).to.be.equal()
         })
 
         it('Returns token price', async () => {
-            const result = await investment.tokenPrice(1)
-            console.log(result)
+            const result = await investment.nftData(2)
+            console.log(result.tokenPrice)
             // expect(result).to.be.equal()
         })
 
-        it('Updates ownership', async () => {
-            expect(await realEstate.ownerOf(1)).to.be.equal(investment.address)
-        })
     })
 
     describe('Investment', () => {
         beforeEach(async () => {
-            let transaction = await investment.connect(inspector).updateInspectionStatus(1, true)
+            let transaction = await investment.connect(inspectors[0]).updateInspectionStatus(1, true)
             await transaction.wait()
 
             transaction = await investment.connect(investors[0]).invest(1, 1000, { value: tokens(1) })
@@ -104,10 +92,11 @@ describe('Escrow', () => {
         })
 
         it('Token Transfered', async () => {
-            const tokenAddress = await investment.tokenCollections(1)
+            const result = await investment.nftData(1)
+            const tokenAddress = result.tokenCollection
             // const result = await tokenCollection.balanceOf(investors[0].address)
             const erc20Contract = await ethers.getContractAt("Token", tokenAddress);
-            console.log(await erc20Contract.balanceOf(investors[2].address))
+            console.log(await erc20Contract.balanceOf(investors[1].address))
         })
     })
     

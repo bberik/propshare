@@ -2,7 +2,7 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/berik/Desktop/propshare/contracts/RealEstate.sol": {
-      "lastModificationDate": 1685203505242,
+      "lastModificationDate": 1685268980968,
       "contentHash": "ef5c36132a92180274a0fd4475d4034c",
       "sourceName": "contracts/RealEstate.sol",
       "solcConfig": {
@@ -41,8 +41,8 @@
       ]
     },
     "/Users/berik/Desktop/propshare/contracts/Investment.sol": {
-      "lastModificationDate": 1685202439485,
-      "contentHash": "9020818e3ce631f634db9075d6f61b74",
+      "lastModificationDate": 1685269823161,
+      "contentHash": "9c08e19e91c2b063998c92df8f1f8109",
       "sourceName": "contracts/Investment.sol",
       "solcConfig": {
         "version": "0.8.17",

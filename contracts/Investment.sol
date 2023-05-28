@@ -8,36 +8,24 @@ interface IERC721 {
 
 contract Investment {
     address public nftAddress;
-    address payable public owner;
-    address public inspector;
 
-    modifier onlyInspector() {
-        require(msg.sender == inspector, "Only inspector can call this method");
-        _;
+    struct NftData {
+        address payable owner;
+        address inspector;
+        bool inspectionPassed;
+        uint256 numberOfTotalTokens;
+        bool isListed;
+        uint256 totalPrice;
+        uint256 tokenPrice;
+        uint256 numberOfAvailableTokens;
+        Token tokenCollection;
     }
 
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Only owner can call this method");
-        _;
-    }
-
-    mapping(uint256 => bool) public inspectionPassed;
-    mapping(uint256 => uint256) public numberOfTotalTokens;
-    mapping(uint256 => bool) public isListed;
-    mapping(uint256 => uint256) public totalPrice;
+    mapping(uint256 => NftData) public nftData;
     mapping(uint256 => mapping(address => uint256)) public investors;
-    mapping(uint256 => uint256) public tokenPrice;
-    mapping(uint256 => uint256) numberOfAvailableTokens;
-    mapping(uint256 => Token) public tokenCollections;
 
-    constructor(
-        address _nftAddress,
-        address payable _owner,
-        address _inspector
-    ) {
+    constructor(address _nftAddress) {
         nftAddress = _nftAddress;
-        owner = _owner;
-        inspector = _inspector;
     }
 
     function list(
@@ -45,8 +33,9 @@ contract Investment {
         uint256 _totalPrice,
         uint256 _sharedPersentage,
         string memory _name,
-        string memory _symbol
-    ) public payable onlyOwner {
+        string memory _symbol,
+        address _inspector
+    ) public payable {
         require(
             _sharedPersentage <= 75 && _sharedPersentage >= 20,
             "Owner should keep at least 25% of the property, while offering at least 20% of property shares"
@@ -59,14 +48,17 @@ contract Investment {
 
         IERC721(nftAddress).transferFrom(msg.sender, address(this), _nftID);
 
-        isListed[_nftID] = true;
-        totalPrice[_nftID] = _totalPrice;
-        numberOfTotalTokens[_nftID] = _sharedPersentage * 100; //hardcoded number of tokens (have to make it either input or global variable)
-        numberOfAvailableTokens[_nftID] = numberOfTotalTokens[_nftID];
-        tokenPrice[_nftID] = _totalPrice / 10000; // hardcoded (each token is 0.01% of the property value)
+        nftData[_nftID].isListed = true;
+        nftData[_nftID].inspector = _inspector;
+        nftData[_nftID].owner = payable(msg.sender);
+        nftData[_nftID].totalPrice = _totalPrice;
+        nftData[_nftID].numberOfTotalTokens = _sharedPersentage * 100; //hardcoded number of tokens (have to make it either input or global variable)
+        nftData[_nftID].numberOfAvailableTokens = nftData[_nftID]
+            .numberOfTotalTokens;
+        nftData[_nftID].tokenPrice = _totalPrice / 10000; // hardcoded (each token is 0.01% of the property value)
 
         Token newTokenCollection = new Token(_symbol, _name);
-        tokenCollections[_nftID] = newTokenCollection;
+        nftData[_nftID].tokenCollection = newTokenCollection;
     }
 
     function invest(
@@ -74,29 +66,33 @@ contract Investment {
         uint256 _numberOfTokensInvested
     ) public payable {
         require(
-            inspectionPassed[_nftID] == true,
+            nftData[_nftID].inspectionPassed == true,
             "The property didn't pass the inspection check yet, cannot be invested"
         );
         require(
             _numberOfTokensInvested > 0 &&
-                _numberOfTokensInvested <= numberOfAvailableTokens[_nftID],
+                _numberOfTokensInvested <=
+                nftData[_nftID].numberOfAvailableTokens,
             "Number of tokens should be greater than zero and less than number of available tokens"
         );
         require(
-            msg.value == _numberOfTokensInvested * tokenPrice[_nftID],
+            msg.value == _numberOfTokensInvested * nftData[_nftID].tokenPrice,
             "Not exact amount of Ether transfered to purchase tokens"
         );
         investors[_nftID][msg.sender] = _numberOfTokensInvested;
-        numberOfAvailableTokens[_nftID] -= _numberOfTokensInvested;
-        // To-do: Get the ERC20 tokens from Tokens.sol contract and send it to investors wallet
-        tokenCollections[_nftID].mint(msg.sender, _numberOfTokensInvested);
+        nftData[_nftID].numberOfAvailableTokens -= _numberOfTokensInvested;
+        nftData[_nftID].tokenCollection.mint(
+            msg.sender,
+            _numberOfTokensInvested
+        );
     }
 
-    function updateInspectionStatus(
-        uint256 _nftID,
-        bool _passed
-    ) public onlyInspector {
-        inspectionPassed[_nftID] = _passed;
+    function updateInspectionStatus(uint256 _nftID, bool _passed) public {
+        require(
+            msg.sender == nftData[_nftID].inspector,
+            "Only inspector can update the inspection status"
+        );
+        nftData[_nftID].inspectionPassed = _passed;
     }
 
     receive() external payable {}
