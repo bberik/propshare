@@ -4,6 +4,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  background-color: #b3e0dc;
+
 }
 
 :root {
@@ -13,11 +15,13 @@
   --clr-blue: #6C63FF;
   --clr-blue-2: #4c46b6;
   --clr-green: #4fb646;
+  background-color: #b3e0dc;
 }
 
 body {
   margin: 0;
   font-family: "Open Sans";
+  background-color: #b3e0dc;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

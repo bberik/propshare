@@ -1,5 +1,6 @@
 import { useEffect, useContext } from 'react';
 import React from 'react';
+import './App.css'
 import { ethers } from 'ethers';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
@@ -15,7 +16,7 @@ import Dashboard from './components/dashboard/Dashboard';
 
 // ABIs
 import RealEstate from './abis/RealEstate.json'
-import Escrow from './abis/Escrow.json'
+import Escrow from './abis/Investment.json'
 
 // Config
 import config from './config.json';

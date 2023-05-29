@@ -1,0 +1,200 @@
+[
+    {
+        "inputs": [
+            {
+                "internalType": "address",
+                "name": "_nftAddress",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "getBalance",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_nftID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_numberOfTokensInvested",
+                "type": "uint256"
+            }
+        ],
+        "name": "invest",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            },
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "name": "investors",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_nftID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_totalPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_sharedPersentage",
+                "type": "uint256"
+            },
+            {
+                "internalType": "string",
+                "name": "_name",
+                "type": "string"
+            },
+            {
+                "internalType": "string",
+                "name": "_symbol",
+                "type": "string"
+            },
+            {
+                "internalType": "address",
+                "name": "_inspector",
+                "type": "address"
+            }
+        ],
+        "name": "list",
+        "outputs": [],
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "nftAddress",
+        "outputs": [
+            {
+                "internalType": "address",
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "name": "nftData",
+        "outputs": [
+            {
+                "internalType": "address payable",
+                "name": "owner",
+                "type": "address"
+            },
+            {
+                "internalType": "address",
+                "name": "inspector",
+                "type": "address"
+            },
+            {
+                "internalType": "bool",
+                "name": "inspectionPassed",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "numberOfTotalTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "isListed",
+                "type": "bool"
+            },
+            {
+                "internalType": "uint256",
+                "name": "totalPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "tokenPrice",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "numberOfAvailableTokens",
+                "type": "uint256"
+            },
+            {
+                "internalType": "contract Token",
+                "name": "tokenCollection",
+                "type": "address"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "uint256",
+                "name": "_nftID",
+                "type": "uint256"
+            },
+            {
+                "internalType": "bool",
+                "name": "_passed",
+                "type": "bool"
+            }
+        ],
+        "name": "updateInspectionStatus",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "stateMutability": "payable",
+        "type": "receive"
+    }
+]

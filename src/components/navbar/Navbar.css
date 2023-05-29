@@ -2,7 +2,7 @@ nav {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     align-items: center;
-    background-color: darkseagreen;
+    background-color: #b3e0dc;
     width: auto;
 }
 
