@@ -29,12 +29,14 @@ const ListProperty = () => {
   });
 
   const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     if (name === "image") {
       const file = e.target.files[0];
       setImageFile(file);
+      setImagePreview(URL.createObjectURL(file));
     } else {
       setProperty((prevState) => ({
         ...prevState,
@@ -46,8 +48,9 @@ const ListProperty = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const imageClient = makeStorageClient();
-    console.log(1)
-    const imageCid = await imageClient.put([imageFile]);
+    console.log(property)
+    const imgF = new File([imageFile], "image.png")
+    const imageCid = await imageClient.put([imgF], "yes.png");
     console.log(imageCid)
     setProperty((prevState) => ({
         ...prevState,
@@ -59,7 +62,7 @@ const ListProperty = () => {
     const file = new Blob([jsonData], { type: 'application/json' });
     const jsonFile = new File([file], "metadata.json")
     const client = makeStorageClient()
-    const cid = await client.put([jsonFile])
+    const cid = await client.put([jsonFile], "whynot.json")
     console.log('stored files with cid:', cid)
   };
 
@@ -102,6 +105,9 @@ const ListProperty = () => {
         //   value={property.image}
           onChange={handleInputChange}
         />
+        {imagePreview && (
+          <img src={imagePreview} alt="Preview" style={{ width: '200px' }} />
+        )}
 
         {/* Render other input fields for the attributes array */}
         {property.attributes.map((attribute, index) => (

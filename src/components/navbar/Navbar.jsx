@@ -3,9 +3,17 @@ import { Link } from 'react-router-dom';
 import Logo from '../../assets/logo.png'
 import './Navbar.css'
 
-const Navbar = () => {
+const Navbar = ({account, setAccount}) => {
     // const account = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266";
-    let account;
+    // let account;
+    console.log(account)
+
+    const connectHandler = async () =>{
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        setAccount(accounts[0]);
+    }
+    
+
 
     return (
         <nav>
@@ -31,7 +39,7 @@ const Navbar = () => {
                 <button
                     type="button"
                     className='nav__connect'
-                // onClick={connectHandler}
+                    onClick={connectHandler}
                 >
                     Connect
                 </button>
