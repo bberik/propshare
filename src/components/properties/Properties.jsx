@@ -15,7 +15,6 @@ function makeStorageClient() {
 const Properties = () => {
     const [properties, setProperties] = useState([])
     const [provider, setProvider] = useState(null)
-    const [imageURL, setImageURL] = useState(null);
 
 
     const loadBlockchainData = async () => {
@@ -28,7 +27,7 @@ const Properties = () => {
 
         for (var i = 1; i <= totalSupply; i++) {
             const uri = await realEstate.tokenURI(i)
-            const nft = await getNFT(uri, i);
+            const nft = await getNFT("https://bafybeifk7h5aleejzql3gicikhox4kf6y6jfyov4b2jjzqgpwq676mtcli.ipfs.w3s.link/metadata.json", i);
 
             const property = await parseNFT(nft, i);
 
@@ -49,6 +48,7 @@ const Properties = () => {
     const getNFT = async (uri, i) => {
         let cid = uri.split("/")
         cid = cid[cid.length - 2]
+        cid = cid.split(".")[0]
 
         const client = makeStorageClient()
         const res = await client.get(cid)
@@ -57,7 +57,7 @@ const Properties = () => {
         }
 
         const files = await res.files()
-        return files[i - 1]
+        return files[0]
     }
 
     const parseNFT = (nft, i) => {

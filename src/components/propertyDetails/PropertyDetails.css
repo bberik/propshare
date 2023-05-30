@@ -1,0 +1,53 @@
+.container {
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+.side {
+    margin: 10px;
+    width: 25%;
+}
+
+.main {
+    margin: 10px;
+    width: 65%;
+}
+
+.main img {
+    max-width: 100%;
+}
+
+.side_details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.side_details h5 {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.investment__details {
+    max-width: 50%;
+}
+
+.details img {
+    width: 10%;
+    height: 50%;
+    margin-top: 10px;
+}
+
+.details div {
+    display: flex;
+    justify-content: end;
+}
