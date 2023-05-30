@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import './Hero.css';
+import { useNavigate } from 'react-router-dom';
 
 const cities = ['New York', 'Los Angeles', 'San Francisco'];
 const propertyTypes = ['Apartment', 'House', 'Condo'];
@@ -10,7 +11,7 @@ const Hero = () => {
     const [selectedCity, setSelectedCity] = useState('');
     const [selectedPropertyType, setSelectedPropertyType] = useState('');
     const [selectedPriceRange, setSelectedPriceRange] = useState('');
-
+    const navigate = useNavigate();
     // Event handlers for user selections
     const handleCityChange = (e) => {
         setSelectedCity(e.target.value);
@@ -23,6 +24,13 @@ const Hero = () => {
     const handlePriceRangeChange = (e) => {
         setSelectedPriceRange(e.target.value);
     };
+
+    const handleRefresh = () => {
+        setSelectedCity('');
+        setSelectedPropertyType('');
+        setSelectedPriceRange('');
+    };
+
 
 
     return (
@@ -71,9 +79,16 @@ const Hero = () => {
                             ))}
                         </select>
                     </div>
-                    <button>Search</button>
+                    <button className="search-button" onClick={() => navigate("/?city=${selectedCity}&type=${selectedPropertyType}&price=${selectedPriceRange}")}>
+                        Search
+                    </button>
+                    {/* <button className="refresh-button" onClick={handleRefresh}>
+                        Refresh
+                    </button> */}
                 </div>
+
             </div>
+
         </div>
 
     )

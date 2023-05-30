@@ -38,10 +38,10 @@
 }
 
 .investment__details {
-    max-width: 50%;
+    max-width: 40%;
 }
 
-.details img {
+.details div img {
     width: 10%;
     height: 50%;
     margin-top: 10px;
@@ -50,4 +50,112 @@
 .details div {
     display: flex;
     justify-content: end;
+}
+
+
+.price {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.price img {
+    width: 10%;
+    height: 50%;
+    margin-top: 10px;
+}
+
+.invest {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.invest__form {
+    margin-left: 20px;
+    max-width: 40%;
+}
+
+
+.invest__form form p {
+    color: red;
+}
+
+.invest__form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.invest__form form input {
+    width: 30%;
+}
+
+.invest__form form label {
+    color: black;
+    margin-bottom: 10px;
+}
+
+.invest__form form button {
+    margin-top: 10px;
+}
+
+
+
+.invest__form h2 {
+    margin-top: 0%;
+}
+
+.total {
+    width: 100%;
+}
+
+.error h2 {
+    color: red;
+}
+
+.error {
+    max-width: 40%;
+    margin-left: 20px;
+}
+
+.approve {
+    max-width: 45%;
+    margin-left: 20px;
+}
+
+.approve button {
+    width: fit-content;
+}
+
+.approve h2 {
+    width: 100%;
+    min-width: 100%;
+}
+
+.warning-container {
+    display: flex;
+    align-items: center;
+    background-color: #ffeeba;
+    padding: 10px;
+    border: 1px solid #ffc107;
+    border-radius: 4px;
+}
+
+.warning-icon {
+    background-color: #ffc107;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    width: 50px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.warning-message {
+    margin-left: 10px;
+    color: #856404;
+    font-size: 16px;
+    font-weight: bold;
 }

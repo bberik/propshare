@@ -484,8 +484,8 @@
       ]
     },
     "/Users/berik/Desktop/propshare/contracts/Tokens.sol": {
-      "lastModificationDate": 1685201687059,
-      "contentHash": "d850c3ef285a7d2b56daa8776aa1f620",
+      "lastModificationDate": 1685445118728,
+      "contentHash": "e4785b5618aa598e0bb6cb6c8839c14e",
       "sourceName": "contracts/Tokens.sol",
       "solcConfig": {
         "version": "0.8.17",
